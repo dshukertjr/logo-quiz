@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Image Quiz" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Image Quiz</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="menu">
+    <h1>Image Quiz</h1>
+
+    <section>
+      <h2>Categories</h2>
+      <label><input type="checkbox" name="category" value="companies" /> Tech companies</label>
+      <label><input type="checkbox" name="category" value="people" /> People in tech</label>
+      <label><input type="checkbox" name="category" value="frameworks" /> Frameworks &amp; languages</label>
+    </section>
+
+    <section>
+      <h2>Effect</h2>
+      <select id="effect">
+        <option value="zoom">Zoom out</option>
+        <option value="pixelate">Pixelated</option>
+        <option value="zoompixel">Zoom + pixelated</option>
+        <option value="random">Random each round</option>
+      </select>
+    </section>
+
+    <section>
+      <label><input type="checkbox" id="showAnswer" /> Show the answer after the reveal</label>
+    </section>
+
+    <button id="start">Start</button>
+    <p id="count"></p>
+    <p class="note">Questions play in the order listed in <code>images.js</code>. Anything already shown is skipped next time, so each video gets fresh questions.</p>
+    <button id="resetUsed" class="link">Reset used questions</button>
+
+    <ul class="help">
+      <li><b>Tap</b>: next level (4 levels, the last is the plain image)</li>
+      <li><b>Tap on the plain image</b>: next question</li>
+      <li><b>Swipe left</b>: next question, <b>swipe right</b>: previous</li>
+      <li><b>Swipe up</b>: reveal instantly, <b>swipe down</b>: back to this menu</li>
+      <li>Keyboard: Space (tap), ← →, Enter (reveal), Esc (menu)</li>
+    </ul>
+  </main>
+
+  <canvas id="stage" hidden></canvas>
+
+  <script src="images.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
