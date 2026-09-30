@@ -18,6 +18,8 @@ For a true full-screen experience without Safari's toolbar, use **Share → Add 
 
 Push the repo to GitHub and import it in Vercel. It detects Vite automatically (build command `npm run build`, output directory `dist`), so no extra config is needed. Or deploy from the terminal with `npx vercel`.
 
+The site asks search engines and bots not to index it: a `noindex` `X-Robots-Tag` header on every response (`vercel.json`), a matching `<meta name="robots">` tag, and a `robots.txt` that disallows everything.
+
 ## Controls
 
 | Action | Touch | Keyboard |
