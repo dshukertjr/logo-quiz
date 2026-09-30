@@ -1,0 +1,106 @@
+export type Category = "companies" | "people" | "frameworks";
+
+export interface QuizImage {
+  category: Category;
+  answer: string;
+  /** Path under public/, e.g. /images/companies/figma.svg */
+  src: string;
+  /** Optional fixed zoom spot, 0–1 across/down the image. */
+  focus?: { x: number; y: number };
+}
+
+// Add your own images here. Files live in public/images/<category>/.
+// Questions play in this order. SVG logos and photos (jpg/png) both work.
+export const IMAGES: QuizImage[] = [
+  // Tech companies
+  { category: "companies", answer: "Airbnb", src: "/images/companies/airbnb.svg" },
+  { category: "companies", answer: "Android", src: "/images/companies/android.svg" },
+  { category: "companies", answer: "Anthropic", src: "/images/companies/anthropic.svg" },
+  { category: "companies", answer: "Apple", src: "/images/companies/apple.svg" },
+  { category: "companies", answer: "Asana", src: "/images/companies/asana.svg" },
+  { category: "companies", answer: "Atlassian", src: "/images/companies/atlassian.svg" },
+  { category: "companies", answer: "Chrome", src: "/images/companies/chrome.svg" },
+  { category: "companies", answer: "Cloudflare", src: "/images/companies/cloudflare.svg" },
+  { category: "companies", answer: "Discord", src: "/images/companies/discord.svg" },
+  { category: "companies", answer: "Dropbox", src: "/images/companies/dropbox.svg" },
+  { category: "companies", answer: "Facebook", src: "/images/companies/facebook.svg" },
+  { category: "companies", answer: "Figma", src: "/images/companies/figma.svg" },
+  { category: "companies", answer: "Firefox", src: "/images/companies/firefox.svg" },
+  { category: "companies", answer: "GitHub", src: "/images/companies/github.svg" },
+  { category: "companies", answer: "GitLab", src: "/images/companies/gitlab.svg" },
+  { category: "companies", answer: "Google", src: "/images/companies/google.svg" },
+  { category: "companies", answer: "Instagram", src: "/images/companies/instagram.svg" },
+  { category: "companies", answer: "Jira", src: "/images/companies/jira.svg" },
+  { category: "companies", answer: "Linear", src: "/images/companies/linear.svg" },
+  { category: "companies", answer: "LinkedIn", src: "/images/companies/linkedin.svg" },
+  { category: "companies", answer: "Messenger", src: "/images/companies/messenger.svg" },
+  { category: "companies", answer: "Meta", src: "/images/companies/meta.svg" },
+  { category: "companies", answer: "Microsoft", src: "/images/companies/microsoft.svg" },
+  { category: "companies", answer: "Netflix", src: "/images/companies/netflix.svg" },
+  { category: "companies", answer: "Notion", src: "/images/companies/notion.svg" },
+  { category: "companies", answer: "NVIDIA", src: "/images/companies/nvidia.svg" },
+  { category: "companies", answer: "OpenAI", src: "/images/companies/openai.svg" },
+  { category: "companies", answer: "PayPal", src: "/images/companies/paypal.svg" },
+  { category: "companies", answer: "Pinterest", src: "/images/companies/pinterest.svg" },
+  { category: "companies", answer: "Reddit", src: "/images/companies/reddit.svg" },
+  { category: "companies", answer: "Safari", src: "/images/companies/safari.svg" },
+  { category: "companies", answer: "Shopify", src: "/images/companies/shopify.svg" },
+  { category: "companies", answer: "Slack", src: "/images/companies/slack.svg" },
+  { category: "companies", answer: "Spotify", src: "/images/companies/spotify.svg" },
+  { category: "companies", answer: "Stripe", src: "/images/companies/stripe.svg" },
+  { category: "companies", answer: "Supabase", src: "/images/companies/supabase.svg" },
+  { category: "companies", answer: "Telegram", src: "/images/companies/telegram.svg" },
+  { category: "companies", answer: "Tesla", src: "/images/companies/tesla.svg" },
+  { category: "companies", answer: "TikTok", src: "/images/companies/tiktok.svg" },
+  { category: "companies", answer: "Trello", src: "/images/companies/trello.svg" },
+  { category: "companies", answer: "Twitch", src: "/images/companies/twitch.svg" },
+  { category: "companies", answer: "Vercel", src: "/images/companies/vercel.svg" },
+  { category: "companies", answer: "WhatsApp", src: "/images/companies/whatsapp.svg" },
+  { category: "companies", answer: "X (Twitter)", src: "/images/companies/x.svg" },
+  { category: "companies", answer: "YouTube", src: "/images/companies/youtube.svg" },
+
+  // Frameworks, languages & tools
+  { category: "frameworks", answer: "Angular", src: "/images/frameworks/angular.svg" },
+  { category: "frameworks", answer: "Astro", src: "/images/frameworks/astro.svg" },
+  { category: "frameworks", answer: "Bun", src: "/images/frameworks/bun.svg" },
+  { category: "frameworks", answer: "Deno", src: "/images/frameworks/deno.svg" },
+  { category: "frameworks", answer: "Django", src: "/images/frameworks/django.svg" },
+  { category: "frameworks", answer: "Docker", src: "/images/frameworks/docker.svg" },
+  { category: "frameworks", answer: "Flask", src: "/images/frameworks/flask.svg" },
+  { category: "frameworks", answer: "Flutter", src: "/images/frameworks/flutter.svg" },
+  { category: "frameworks", answer: "Go", src: "/images/frameworks/go.svg" },
+  { category: "frameworks", answer: "Kubernetes", src: "/images/frameworks/kubernetes.svg" },
+  { category: "frameworks", answer: "Laravel", src: "/images/frameworks/laravel.svg" },
+  { category: "frameworks", answer: "Next.js", src: "/images/frameworks/nextdotjs.svg" },
+  { category: "frameworks", answer: "Node.js", src: "/images/frameworks/nodedotjs.svg" },
+  { category: "frameworks", answer: "Nuxt", src: "/images/frameworks/nuxt.svg" },
+  { category: "frameworks", answer: "Python", src: "/images/frameworks/python.svg" },
+  { category: "frameworks", answer: "React", src: "/images/frameworks/react.svg" },
+  { category: "frameworks", answer: "Ruby on Rails", src: "/images/frameworks/rubyonrails.svg" },
+  { category: "frameworks", answer: "Rust", src: "/images/frameworks/rust.svg" },
+  { category: "frameworks", answer: "Svelte", src: "/images/frameworks/svelte.svg" },
+  { category: "frameworks", answer: "Tailwind CSS", src: "/images/frameworks/tailwindcss.svg" },
+  { category: "frameworks", answer: "TypeScript", src: "/images/frameworks/typescript.svg" },
+  { category: "frameworks", answer: "Vite", src: "/images/frameworks/vite.svg" },
+  { category: "frameworks", answer: "Vue.js", src: "/images/frameworks/vuedotjs.svg" },
+
+  // Famous people in tech
+  { category: "people", answer: "Ada Lovelace", src: "/images/people/Ada_Lovelace.png" },
+  { category: "people", answer: "Bill Gates", src: "/images/people/Bill_Gates.jpg" },
+  { category: "people", answer: "Dario Amodei", src: "/images/people/Dario_Amodei.jpg" },
+  { category: "people", answer: "Elon Musk", src: "/images/people/Elon_Musk.jpg" },
+  { category: "people", answer: "Grace Hopper", src: "/images/people/Grace_Hopper.jpg" },
+  { category: "people", answer: "Guido van Rossum", src: "/images/people/Guido_van_Rossum.jpg" },
+  { category: "people", answer: "Jeff Bezos", src: "/images/people/Jeff_Bezos.jpg" },
+  { category: "people", answer: "Jensen Huang", src: "/images/people/Jensen_Huang.jpg" },
+  { category: "people", answer: "Linus Torvalds", src: "/images/people/Linus_Torvalds.jpg" },
+  { category: "people", answer: "Lisa Su", src: "/images/people/Lisa_Su.jpg" },
+  { category: "people", answer: "Mark Zuckerberg", src: "/images/people/Mark_Zuckerberg.jpg" },
+  { category: "people", answer: "Sam Altman", src: "/images/people/Sam_Altman.jpg" },
+  { category: "people", answer: "Satya Nadella", src: "/images/people/Satya_Nadella.jpg" },
+  { category: "people", answer: "Steve Jobs", src: "/images/people/Steve_Jobs.jpg" },
+  { category: "people", answer: "Steve Wozniak", src: "/images/people/Steve_Wozniak.jpg" },
+  { category: "people", answer: "Sundar Pichai", src: "/images/people/Sundar_Pichai.jpg" },
+  { category: "people", answer: "Tim Berners-Lee", src: "/images/people/Tim_Berners-Lee.jpg" },
+  { category: "people", answer: "Tim Cook", src: "/images/people/Tim_Cook.jpg" },
+];

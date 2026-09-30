@@ -1,15 +1,22 @@
 # Image Quiz
 
-A full-screen guessing game for the iPad. The image starts heavily zoomed in and/or pixelated, then slowly reveals itself on a plain white background.
+A full-screen guessing game for the iPad. The image starts heavily zoomed in and/or pixelated, and each tap reveals a bit more, on a plain white background. Built with Vite + React + TypeScript.
 
 ## Run it
 
 ```sh
-python3 -m http.server 8000
+npm install
+npm run dev
 ```
 
-On the iPad (same Wi-Fi), open `http://<your-mac-ip>:8000`. Find the IP with `ipconfig getifaddr en0`.
+Vite prints a `Local` URL for the Mac and a `Network` URL (`http://<your-mac-ip>:5173`) for the iPad on the same Wi-Fi.
 For a true full-screen experience without Safari's toolbar, use **Share → Add to Home Screen** and launch it from the icon.
+
+`npm run build` type-checks and writes a static site to `dist/`; `npm run preview` serves that build locally.
+
+## Deploy to Vercel
+
+Push the repo to GitHub and import it in Vercel. It detects Vite automatically (build command `npm run build`, output directory `dist`), so no extra config is needed. Or deploy from the terminal with `npx vercel`.
 
 ## Controls
 
@@ -25,11 +32,11 @@ The whole screen is the tap target, so you can control it blind while holding th
 
 ## Question order and repeats
 
-Questions play in the order they appear in `images.js`, filtered by the selected categories. Every question that's shown is remembered on that device and skipped in later sessions, so separate videos never repeat a question. Use **Reset used questions** in the menu to start over.
+Questions play in the order they appear in `src/images.ts`, filtered by the selected categories. Every question that's shown is remembered in that browser (per device and per URL) and skipped in later sessions, so separate videos never repeat a question. Use **Reset used questions** in the menu to start over.
 
 ## Adding images
 
-Drop files into `images/<category>/` and add a line to `images.js`. SVG, PNG and JPG all work.
-Tweak the difficulty of each level (`LEVELS`) and the transition speed at the top of `app.js`. You can also pin the zoom spot for an image with `focus: { x: 0.5, y: 0.3 }` (0–1 across/down the image).
+Drop files into `public/images/<category>/` and add a line to `src/images.ts` (paths start with `/images/...`). SVG, PNG and JPG all work.
+Tweak the difficulty of each level (`LEVELS`) and the transition speed at the top of `src/engine.ts`. You can also pin the zoom spot for an image with `focus: { x: 0.5, y: 0.3 }` (0–1 across/down the image).
 
-Logos come from [Simple Icons](https://simpleicons.org) (brand trademarks belong to their owners); photos come from Wikimedia Commons.
+Logos come from [gilbarbara/logos](https://github.com/gilbarbara/logos), [Simple Icons](https://simpleicons.org) and Wikimedia Commons (brand trademarks belong to their owners); photos come from Wikimedia Commons.
