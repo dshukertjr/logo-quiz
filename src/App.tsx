@@ -45,9 +45,12 @@ export function App() {
       onChange={(s: Settings) => setSettings(s)}
       total={selected.length}
       left={unused.length}
-      hasUsed={used.size > 0}
       onStart={start}
-      onResetUsed={() => setUsed(new Set())}
+      onResetUsed={() => {
+        // Only the selected category; other categories keep their used questions.
+        const inCategory = new Set(selected.map((i) => i.src));
+        setUsed((prev) => new Set([...prev].filter((src) => !inCategory.has(src))));
+      }}
     />
   );
 }

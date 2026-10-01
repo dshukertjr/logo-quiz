@@ -22,59 +22,84 @@ interface Props {
   onChange: (settings: Settings) => void;
   total: number;
   left: number;
-  hasUsed: boolean;
   onStart: () => void;
   onResetUsed: () => void;
 }
 
-export function Menu({ settings, onChange, total, left, hasUsed, onStart, onResetUsed }: Props) {
+export function Menu({ settings, onChange, total, left, onStart, onResetUsed }: Props) {
+  const categoryLabel = CATEGORIES.find((c) => c.value === settings.category)?.label ?? settings.category;
+  const usedCount = total - left;
+
   const resetUsed = () => {
-    if (confirm("Mark every question as unused? Questions from earlier videos will show up again.")) onResetUsed();
+    const message = `Mark all ${usedCount} used ${categoryLabel} questions as unused? They'll show up again in the next video. Other categories aren't affected.`;
+    if (confirm(message)) onResetUsed();
   };
+
+  const usedPercent = total ? (usedCount / total) * 100 : 0;
 
   return (
     <main className="menu">
-      <h1>Image Quiz</h1>
+      <header className="header">
+        <img src="/images/companies/supabase.svg" alt="" />
+        <h1>Image Quiz</h1>
+      </header>
 
-      <section>
-        <h2>Category</h2>
-        <select
-          value={settings.category}
-          onChange={(e) => onChange({ ...settings, category: e.target.value as Category })}
-        >
-          {CATEGORIES.map((c) => (
-            <option key={c.value} value={c.value}>{c.label}</option>
-          ))}
-        </select>
-      </section>
+      <div className="card settings">
+        <div className="field">
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            value={settings.category}
+            onChange={(e) => onChange({ ...settings, category: e.target.value as Category })}
+          >
+            {CATEGORIES.map((c) => (
+              <option key={c.value} value={c.value}>{c.label}</option>
+            ))}
+          </select>
+        </div>
 
-      <section>
-        <h2>Effect</h2>
-        <select
-          value={settings.effect}
-          onChange={(e) => onChange({ ...settings, effect: e.target.value as EffectSetting })}
-        >
-          {EFFECT_OPTIONS.map((o) => (
-            <option key={o.value} value={o.value}>{o.label}</option>
-          ))}
-        </select>
-      </section>
+        <div className="field">
+          <label htmlFor="effect">Effect</label>
+          <select
+            id="effect"
+            value={settings.effect}
+            onChange={(e) => onChange({ ...settings, effect: e.target.value as EffectSetting })}
+          >
+            {EFFECT_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </div>
 
-      <button className="start" disabled={left === 0} onClick={onStart}>Start</button>
-      <p className="count">{left} of {total} questions not used yet</p>
+        <div className="progress">
+          <div className="progress-label">
+            <span>Questions left</span>
+            <span className="count"><strong>{left}</strong> of {total} not used yet</span>
+          </div>
+          <div className="progress-bar"><span style={{ width: `${usedPercent}%` }} /></div>
+        </div>
+
+        <button className="start" disabled={left === 0} onClick={onStart}>Start</button>
+      </div>
+
       <p className="note">
         Questions play in the order listed in <code>src/images.ts</code>. Once a question's answer is shown,
         it's skipped next time, so each video gets fresh questions.
       </p>
-      <button className="link" disabled={!hasUsed} onClick={resetUsed}>Reset used questions</button>
+      <button className="link" disabled={usedCount === 0} onClick={resetUsed}>
+        Reset used questions in {categoryLabel}
+      </button>
 
-      <ul className="help">
-        <li><b>Tap</b>: next level (4 levels, the last is the plain image)</li>
-        <li><b>Tap on the plain image</b>: show the answer, <b>tap again</b>: next question</li>
-        <li><b>Swipe left</b>: next question, <b>swipe right</b>: previous</li>
-        <li><b>Swipe up</b>: reveal instantly, <b>swipe down</b>: back to this menu</li>
-        <li>Keyboard: Space (tap), ← →, Enter (reveal), Esc (menu)</li>
-      </ul>
+      <section className="card help">
+        <h2>Controls</h2>
+        <ul>
+          <li><b>Tap</b> to go to the next level (4 levels, the last is the plain image)</li>
+          <li><b>Tap on the plain image</b> to show the answer, <b>tap again</b> for the next question</li>
+          <li><b>Swipe left</b> for the next question, <b>swipe right</b> for the previous one</li>
+          <li><b>Swipe up</b> to reveal instantly, <b>swipe down</b> to come back here</li>
+          <li>Keyboard: <kbd>Space</kbd> tap, <kbd>←</kbd> <kbd>→</kbd> previous / next, <kbd>Enter</kbd> reveal, <kbd>Esc</kbd> menu</li>
+        </ul>
+      </section>
     </main>
   );
 }

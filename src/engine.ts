@@ -260,17 +260,20 @@ export class QuizEngine {
     const pillH = counterSize * 1.7;
     const margin = counterSize;
     ctx.fillStyle = "#fff";
+    ctx.strokeStyle = "#dfdfdf"; // Supabase light border
+    ctx.lineWidth = Math.max(1, counterSize / 14);
     ctx.beginPath();
     ctx.roundRect(W - margin - pillW, margin, pillW, pillH, pillH / 2);
     ctx.fill();
-    ctx.fillStyle = "#888";
+    ctx.stroke();
+    ctx.fillStyle = "#707070";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(counter, W - margin - pillW / 2, margin + pillH / 2);
 
     if (showingAnswer && this.item) {
       const size = Math.round(Math.min(W, H) * 0.06);
-      ctx.fillStyle = "#111";
+      ctx.fillStyle = "#171717";
       ctx.font = `600 ${size}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";

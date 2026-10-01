@@ -35,7 +35,7 @@ The whole screen is the tap target, so you can control it blind while holding th
 
 ## Question order and repeats
 
-Questions play in the order they appear in `src/images.ts`, filtered by the selected category. Once a question's answer is shown, it's remembered in that browser (per device and per URL) and skipped in later sessions, so separate videos never repeat a question. Use **Reset used questions** in the menu to start over.
+Questions play in the order they appear in `src/images.ts`, filtered by the selected category. Once a question's answer is shown, it's remembered in that browser (per device and per URL) and skipped in later sessions, so separate videos never repeat a question. Use **Reset used questions in …** in the menu to start the selected category over; other categories keep their used questions.
 
 ## Adding images
 
