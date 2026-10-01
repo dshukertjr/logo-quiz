@@ -88,6 +88,12 @@ export const IMAGES: QuizImage[] = [
   { category: "companies", answer: "Twitch", src: "/images/companies/twitch.svg" },
   { category: "companies", answer: "Messenger", src: "/images/companies/messenger.svg" },
   { category: "companies", answer: "Claude", src: "/images/companies/claude.svg" },
+  { category: "companies", answer: "Resend", src: "/images/companies/resend.svg" },
+  { category: "companies", answer: "bolt.new", src: "/images/companies/bolt-new.svg" },
+  { category: "companies", answer: "Grafana", src: "/images/companies/grafana.svg" },
+  { category: "companies", answer: "Doppler", src: "/images/companies/doppler.svg" },
+  { category: "companies", answer: "PostHog", src: "/images/companies/posthog.svg" },
+  { category: "companies", answer: "WorkOS", src: "/images/companies/workos.svg" },
 
   // Frameworks, languages & tools
   { category: "frameworks", answer: "Svelte", src: "/images/frameworks/svelte.svg" },
