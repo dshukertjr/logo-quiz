@@ -32,6 +32,8 @@ export interface EngineOptions {
   onQuestion: () => void;
   /** Called when an image's answer is shown, so it can be marked as used. */
   onAnswered: (src: string) => void;
+  /** Whether a question's answer was already shown; Next skips those. */
+  isUsed: (src: string) => boolean;
   /** Called when play wraps from the last question back to the first. */
   onLoop: () => void;
   /** Called if none of the images could be loaded. */
@@ -151,13 +153,13 @@ export class QuizEngine {
     if (this.phase === "playing" && this.level < LAST_LEVEL) this.setLevel(LAST_LEVEL);
   }
 
+  /** Next unused question; after the last one, loop back to the first and start the category over. */
   next() {
-    if (this.index + 1 < this.deck.length) {
-      this.show(this.index + 1);
-    } else {
-      this.opts.onLoop(); // past the last question: start the category over
-      this.show(0);
+    for (let i = this.index + 1; i < this.deck.length; i++) {
+      if (!this.opts.isUsed(this.deck[i].src)) { this.show(i); return; }
     }
+    this.opts.onLoop();
+    this.show(0);
   }
 
   prev() {

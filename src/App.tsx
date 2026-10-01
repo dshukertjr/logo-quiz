@@ -59,6 +59,7 @@ export function App() {
         deck={session.deck}
         startIndex={session.startIndex}
         effect={settings.effect}
+        isUsed={(src) => used.has(src)}
         onAnswered={markUsed}
         onLoop={onLoop}
         onExit={exit}

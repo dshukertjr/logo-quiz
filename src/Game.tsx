@@ -4,12 +4,13 @@ import { QuizEngine, type EngineOptions } from "./engine";
 const SWIPE = 60;
 
 interface Props extends Pick<EngineOptions, "deck" | "startIndex" | "effect"> {
+  isUsed: (src: string) => boolean;
   onAnswered: (src: string) => void;
   onLoop: () => void;
   onExit: () => void;
 }
 
-export function Game({ deck, startIndex, effect, onAnswered, onLoop, onExit }: Props) {
+export function Game({ deck, startIndex, effect, isUsed, onAnswered, onLoop, onExit }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<QuizEngine | null>(null);
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
@@ -17,8 +18,8 @@ export function Game({ deck, startIndex, effect, onAnswered, onLoop, onExit }: P
   const [showingAnswer, setShowingAnswer] = useState(false);
 
   // Keep the latest callbacks without restarting the engine when they change.
-  const callbacks = useRef({ onAnswered, onLoop, onExit });
-  callbacks.current = { onAnswered, onLoop, onExit };
+  const callbacks = useRef({ isUsed, onAnswered, onLoop, onExit });
+  callbacks.current = { isUsed, onAnswered, onLoop, onExit };
 
   useEffect(() => {
     const engine = new QuizEngine(canvasRef.current!, {
@@ -30,6 +31,7 @@ export function Game({ deck, startIndex, effect, onAnswered, onLoop, onExit }: P
         callbacks.current.onAnswered(src);
         setShowingAnswer(true);
       },
+      isUsed: (src) => callbacks.current.isUsed(src),
       onLoop: () => callbacks.current.onLoop(),
       onFinished: () => callbacks.current.onExit(),
     });

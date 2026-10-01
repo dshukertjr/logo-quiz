@@ -3,8 +3,7 @@ import type { Category } from "./images";
 import type { Settings } from "./storage";
 
 const CATEGORIES: { value: Category; label: string }[] = [
-  { value: "companies", label: "Tech companies" },
-  { value: "apps", label: "Apps" },
+  { value: "companies", label: "Tech companies & apps" },
   { value: "people", label: "People in tech" },
   { value: "frameworks", label: "Frameworks & languages" },
 ];
