@@ -26,10 +26,11 @@ The site asks search engines and bots not to index it: a `noindex` `X-Robots-Tag
 |---|---|---|
 | Next level (4 levels; the last is the plain image) | Tap | Space |
 | Show the answer (on the plain image) | Tap | Space |
-| Next question (on the answer) | **Next →** button | → |
-| Previous question | Swipe right | ← |
+| Next question (on the answer) | **Next →** button | — |
 | Jump to the plain image | Swipe up | Enter |
 | Back to menu | Swipe down | Esc |
+
+The **Next →** button is the only way to move to another question, and there's no way back to a previous one.
 
 The whole screen is the tap target, so you can control it blind while holding the iPad facing the players.
 

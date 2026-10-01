@@ -39,8 +39,6 @@ export function Game({ deck, startIndex, effect, isUsed, onAnswered, onLoop, onE
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === " ") { e.preventDefault(); engine.tap(); }
-      else if (e.key === "ArrowRight") engine.next();
-      else if (e.key === "ArrowLeft") engine.prev();
       else if (e.key === "Enter") engine.reveal();
       else if (e.key === "Escape") callbacks.current.onExit();
     };
@@ -79,7 +77,7 @@ export function Game({ deck, startIndex, effect, isUsed, onAnswered, onLoop, onE
     if (!start || !engine) return;
     const dx = e.clientX - start.x, dy = e.clientY - start.y;
     if (Math.abs(dx) > SWIPE && Math.abs(dx) > Math.abs(dy)) {
-      if (dx > 0) engine.prev(); // swipe right: previous. Moving forward is only via the Next button.
+      // Sideways swipes do nothing: the Next button is the only way to change questions.
     } else if (Math.abs(dy) > SWIPE) {
       if (dy < 0) engine.reveal(); else onExit();
     } else {

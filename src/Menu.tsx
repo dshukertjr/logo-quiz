@@ -99,9 +99,8 @@ export function Menu({ settings, onChange, total, left, startNumber, onStart, on
         <ul>
           <li><b>Tap</b> to go to the next level (4 levels, the last is the plain image)</li>
           <li><b>Tap on the plain image</b> to show the answer, then tap <b>Next →</b> for the next question</li>
-          <li><b>Swipe right</b> for the previous question</li>
           <li><b>Swipe up</b> to reveal instantly, <b>swipe down</b> to come back here</li>
-          <li>Keyboard: <kbd>Space</kbd> tap, <kbd>←</kbd> <kbd>→</kbd> previous / next, <kbd>Enter</kbd> reveal, <kbd>Esc</kbd> menu</li>
+          <li>Keyboard: <kbd>Space</kbd> tap, <kbd>Enter</kbd> reveal, <kbd>Esc</kbd> menu</li>
         </ul>
       </section>
     </main>

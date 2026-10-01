@@ -162,10 +162,6 @@ export class QuizEngine {
     this.show(0);
   }
 
-  prev() {
-    this.show((this.index - 1 + this.deck.length) % this.deck.length);
-  }
-
   // ---- Internals ----------------------------------------------------------
   private async show(index: number) {
     if (index < 0 || index >= this.deck.length) return;
