@@ -4,6 +4,7 @@ import type { Settings } from "./storage";
 
 const CATEGORIES: { value: Category; label: string }[] = [
   { value: "companies", label: "Tech companies" },
+  { value: "apps", label: "Apps" },
   { value: "people", label: "People in tech" },
   { value: "frameworks", label: "Frameworks & languages" },
 ];
@@ -13,6 +14,7 @@ const EFFECT_OPTIONS: { value: EffectSetting; label: string }[] = [
   { value: "pixelate", label: "Pixelated" },
   { value: "zoompixel", label: "Zoom + pixelated" },
   { value: "random", label: "Random each round" },
+  { value: "none", label: "No effect (show right away)" },
 ];
 
 interface Props {
@@ -26,13 +28,6 @@ interface Props {
 }
 
 export function Menu({ settings, onChange, total, left, hasUsed, onStart, onResetUsed }: Props) {
-  const toggleCategory = (value: Category, checked: boolean) => {
-    const categories = CATEGORIES.map((c) => c.value).filter((c) =>
-      c === value ? checked : settings.categories.includes(c),
-    );
-    onChange({ ...settings, categories });
-  };
-
   const resetUsed = () => {
     if (confirm("Mark every question as unused? Questions from earlier videos will show up again.")) onResetUsed();
   };
@@ -42,17 +37,15 @@ export function Menu({ settings, onChange, total, left, hasUsed, onStart, onRese
       <h1>Image Quiz</h1>
 
       <section>
-        <h2>Categories</h2>
-        {CATEGORIES.map((c) => (
-          <label key={c.value}>
-            <input
-              type="checkbox"
-              checked={settings.categories.includes(c.value)}
-              onChange={(e) => toggleCategory(c.value, e.target.checked)}
-            />{" "}
-            {c.label}
-          </label>
-        ))}
+        <h2>Category</h2>
+        <select
+          value={settings.category}
+          onChange={(e) => onChange({ ...settings, category: e.target.value as Category })}
+        >
+          {CATEGORIES.map((c) => (
+            <option key={c.value} value={c.value}>{c.label}</option>
+          ))}
+        </select>
       </section>
 
       <section>
@@ -67,28 +60,17 @@ export function Menu({ settings, onChange, total, left, hasUsed, onStart, onRese
         </select>
       </section>
 
-      <section>
-        <label>
-          <input
-            type="checkbox"
-            checked={settings.showAnswer}
-            onChange={(e) => onChange({ ...settings, showAnswer: e.target.checked })}
-          />{" "}
-          Show the answer after the reveal
-        </label>
-      </section>
-
       <button className="start" disabled={left === 0} onClick={onStart}>Start</button>
       <p className="count">{left} of {total} questions not used yet</p>
       <p className="note">
-        Questions play in the order listed in <code>src/images.ts</code>. Anything already shown is skipped next
-        time, so each video gets fresh questions.
+        Questions play in the order listed in <code>src/images.ts</code>. Once a question's answer is shown,
+        it's skipped next time, so each video gets fresh questions.
       </p>
       <button className="link" disabled={!hasUsed} onClick={resetUsed}>Reset used questions</button>
 
       <ul className="help">
         <li><b>Tap</b>: next level (4 levels, the last is the plain image)</li>
-        <li><b>Tap on the plain image</b>: next question</li>
+        <li><b>Tap on the plain image</b>: show the answer, <b>tap again</b>: next question</li>
         <li><b>Swipe left</b>: next question, <b>swipe right</b>: previous</li>
         <li><b>Swipe up</b>: reveal instantly, <b>swipe down</b>: back to this menu</li>
         <li>Keyboard: Space (tap), ← →, Enter (reveal), Esc (menu)</li>

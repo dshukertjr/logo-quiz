@@ -25,7 +25,8 @@ The site asks search engines and bots not to index it: a `noindex` `X-Robots-Tag
 | Action | Touch | Keyboard |
 |---|---|---|
 | Next level (4 levels; the last is the plain image) | Tap | Space |
-| Next question (on the plain image) | Tap | Space |
+| Show the answer (on the plain image) | Tap | Space |
+| Next question (on the answer) | Tap | Space |
 | Next / previous question | Swipe left / right | → / ← |
 | Jump to the plain image | Swipe up | Enter |
 | Back to menu | Swipe down | Esc |
@@ -34,7 +35,7 @@ The whole screen is the tap target, so you can control it blind while holding th
 
 ## Question order and repeats
 
-Questions play in the order they appear in `src/images.ts`, filtered by the selected categories. Every question that's shown is remembered in that browser (per device and per URL) and skipped in later sessions, so separate videos never repeat a question. Use **Reset used questions** in the menu to start over.
+Questions play in the order they appear in `src/images.ts`, filtered by the selected category. Once a question's answer is shown, it's remembered in that browser (per device and per URL) and skipped in later sessions, so separate videos never repeat a question. Use **Reset used questions** in the menu to start over.
 
 ## Adding images
 

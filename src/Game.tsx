@@ -7,21 +7,20 @@ interface Props extends Omit<EngineOptions, "onFinished"> {
   onExit: () => void;
 }
 
-export function Game({ deck, effect, showAnswer, onShown, onExit }: Props) {
+export function Game({ deck, effect, onAnswered, onExit }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<QuizEngine | null>(null);
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
 
   // Keep the latest callbacks without restarting the engine when they change.
-  const callbacks = useRef({ onShown, onExit });
-  callbacks.current = { onShown, onExit };
+  const callbacks = useRef({ onAnswered, onExit });
+  callbacks.current = { onAnswered, onExit };
 
   useEffect(() => {
     const engine = new QuizEngine(canvasRef.current!, {
       deck,
       effect,
-      showAnswer,
-      onShown: (src) => callbacks.current.onShown(src),
+      onAnswered: (src) => callbacks.current.onAnswered(src),
       onFinished: () => callbacks.current.onExit(),
     });
     engineRef.current = engine;
@@ -59,7 +58,7 @@ export function Game({ deck, effect, showAnswer, onShown, onExit }: Props) {
       document.removeEventListener("visibilitychange", onVisible);
       wakeLock?.release().catch(() => {});
     };
-  }, [deck, effect, showAnswer]);
+  }, [deck, effect]);
 
   const onPointerUp = (e: React.PointerEvent) => {
     const start = pointerStart.current;

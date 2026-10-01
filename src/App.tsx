@@ -13,7 +13,7 @@ export function App() {
   useEffect(() => saveSettings(settings), [settings]);
   useEffect(() => saveUsed(used), [used]);
 
-  const selected = IMAGES.filter((i) => settings.categories.includes(i.category));
+  const selected = IMAGES.filter((i) => i.category === settings.category);
   const unused = selected.filter((i) => !used.has(i.src));
 
   const start = () => {
@@ -31,12 +31,12 @@ export function App() {
     else doc.webkitExitFullscreen?.();
   }, []);
 
-  const markShown = useCallback((src: string) => {
+  const markUsed = useCallback((src: string) => {
     setUsed((prev) => (prev.has(src) ? prev : new Set(prev).add(src)));
   }, []);
 
   if (deck) {
-    return <Game deck={deck} effect={settings.effect} showAnswer={settings.showAnswer} onShown={markShown} onExit={exit} />;
+    return <Game deck={deck} effect={settings.effect} onAnswered={markUsed} onExit={exit} />;
   }
 
   return (

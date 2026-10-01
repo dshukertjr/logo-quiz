@@ -9,6 +9,7 @@ export const LEVELS = {
   zoom:      { zoom: [18, 7, 3, 1],    blocks: [0, 0, 0, 0] },
   pixelate:  { zoom: [1, 1, 1, 1],     blocks: [5, 10, 20, 0] },
   zoompixel: { zoom: [7, 3.5, 1.8, 1], blocks: [16, 28, 56, 0] },
+  none:      { zoom: [1, 1, 1, 1],     blocks: [0, 0, 0, 0] }, // plain image right away
 };
 const TRANSITION_MS = 400; // ease between levels; set to 0 for an instant jump
 const IMAGE_FILL = 0.8;    // fraction of the screen the fully revealed image fills
@@ -16,16 +17,16 @@ const LAST_LEVEL = 3;
 
 export type Effect = keyof typeof LEVELS;
 export type EffectSetting = Effect | "random";
-const EFFECTS = Object.keys(LEVELS) as Effect[];
+// Effects "Random each round" picks from (not "none").
+const RANDOM_EFFECTS: Effect[] = ["zoom", "pixelate", "zoompixel"];
 
 type Point = { x: number; y: number };
 
 export interface EngineOptions {
   deck: QuizImage[];
   effect: EffectSetting;
-  showAnswer: boolean;
-  /** Called once an image is on screen, so it can be marked as used. */
-  onShown: (src: string) => void;
+  /** Called when an image's answer is shown, so it can be marked as used. */
+  onAnswered: (src: string) => void;
   /** Called after the last question, or if nothing could be loaded. */
   onFinished: () => void;
 }
@@ -130,8 +131,11 @@ export class QuizEngine {
   tap() {
     if (this.phase === "playing") {
       if (this.level < LAST_LEVEL) this.setLevel(this.level + 1);
-      else if (this.opts.showAnswer) { this.phase = "answer"; this.dirty = true; }
-      else this.next();
+      else {
+        this.phase = "answer";
+        this.dirty = true;
+        if (this.item) this.opts.onAnswered(this.item.src);
+      }
     } else if (this.phase === "answer") {
       this.next();
     }
@@ -161,13 +165,12 @@ export class QuizEngine {
       if (this.destroyed || this.deck[this.index] !== item) return; // skipped ahead while loading
       this.item = item;
       this.img = img;
-      this.effect = this.opts.effect === "random" ? EFFECTS[hash(item.src) % EFFECTS.length] : this.opts.effect;
+      this.effect = this.opts.effect === "random" ? RANDOM_EFFECTS[hash(item.src) % RANDOM_EFFECTS.length] : this.opts.effect;
       this.focus = item.focus ?? findFocus(img, !item.src.endsWith(".svg"), hash(item.src));
-      this.level = 0;
+      this.level = this.effect === "none" ? LAST_LEVEL : 0;
       this.anim = null;
       this.phase = "playing";
       this.dirty = true;
-      this.opts.onShown(item.src);
     } catch {
       if (this.destroyed) return;
       console.warn("Failed to load", item.src);
@@ -248,6 +251,22 @@ export class QuizEngine {
       ctx.imageSmoothingQuality = "high";
       ctx.drawImage(img, dx, dy, dw, dh);
     }
+
+    // Question counter, top right, on a white pill so it reads over zoomed-in images.
+    const counter = `${this.index + 1}/${this.deck.length}`;
+    const counterSize = Math.round(Math.min(W, H) * 0.03);
+    ctx.font = `600 ${counterSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+    const pillW = ctx.measureText(counter).width + counterSize * 1.2;
+    const pillH = counterSize * 1.7;
+    const margin = counterSize;
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.roundRect(W - margin - pillW, margin, pillW, pillH, pillH / 2);
+    ctx.fill();
+    ctx.fillStyle = "#888";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(counter, W - margin - pillW / 2, margin + pillH / 2);
 
     if (showingAnswer && this.item) {
       const size = Math.round(Math.min(W, H) * 0.06);
