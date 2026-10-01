@@ -230,7 +230,8 @@ export class QuizEngine {
     if (!img) return;
 
     const showingAnswer = this.phase === "answer";
-    const areaH = showingAnswer ? H * 0.85 : H;
+    // Always leave room for the answer at the bottom, so the image doesn't move when it appears.
+    const areaH = H * 0.85;
     const fit = Math.min((W * IMAGE_FILL) / img.width, (areaH * IMAGE_FILL) / img.height);
     const iw = img.width * fit, ih = img.height * fit;
 

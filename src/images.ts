@@ -128,7 +128,6 @@ export const IMAGES: QuizImage[] = [
   { category: "people", answer: "Linus Torvalds", src: "/images/people/Linus_Torvalds.jpg" },
   { category: "people", answer: "Elon Musk", src: "/images/people/Elon_Musk.jpg" },
   { category: "people", answer: "Sundar Pichai", src: "/images/people/Sundar_Pichai.jpg" },
-  { category: "people", answer: "Steve Wozniak", src: "/images/people/Steve_Wozniak.jpg" },
   { category: "people", answer: "Ada Lovelace", src: "/images/people/Ada_Lovelace.png" },
   { category: "people", answer: "Sam Altman", src: "/images/people/Sam_Altman.jpg" },
   { category: "people", answer: "Mark Zuckerberg", src: "/images/people/Mark_Zuckerberg.jpg" },
