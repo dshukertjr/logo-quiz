@@ -26,8 +26,8 @@ The site asks search engines and bots not to index it: a `noindex` `X-Robots-Tag
 |---|---|---|
 | Next level (4 levels; the last is the plain image) | Tap | Space |
 | Show the answer (on the plain image) | Tap | Space |
-| Next question (on the answer) | Tap | Space |
-| Next / previous question | Swipe left / right | → / ← |
+| Next question (on the answer) | **Next →** button | → |
+| Previous question | Swipe right | ← |
 | Jump to the plain image | Swipe up | Enter |
 | Back to menu | Swipe down | Esc |
 
@@ -35,7 +35,7 @@ The whole screen is the tap target, so you can control it blind while holding th
 
 ## Question order and repeats
 
-Questions play in the order they appear in `src/images.ts`, filtered by the selected category. Once a question's answer is shown, it's remembered in that browser (per device and per URL) and skipped in later sessions, so separate videos never repeat a question. Use **Reset used questions in …** in the menu to start the selected category over; other categories keep their used questions.
+Questions play in the order they appear in `src/images.ts`, filtered by the selected category. Once a question's answer is shown, it's remembered in that browser (per device and per URL), and **Start** picks up at the first question that hasn't been answered yet, so separate videos never repeat a question. The counter shows the position in the whole category (e.g. `7/30`). After the last question, **Next** loops back to question 1 and the category's used questions are cleared. Use **Reset used questions in …** in the menu to start the selected category over; other categories keep their used questions.
 
 ## Adding images
 

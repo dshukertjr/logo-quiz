@@ -1,26 +1,36 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { QuizEngine, type EngineOptions } from "./engine";
 
 const SWIPE = 60;
 
-interface Props extends Omit<EngineOptions, "onFinished"> {
+interface Props extends Pick<EngineOptions, "deck" | "startIndex" | "effect"> {
+  onAnswered: (src: string) => void;
+  onLoop: () => void;
   onExit: () => void;
 }
 
-export function Game({ deck, effect, onAnswered, onExit }: Props) {
+export function Game({ deck, startIndex, effect, onAnswered, onLoop, onExit }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<QuizEngine | null>(null);
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
+  // Set while the answer is on screen; the Next button only shows then.
+  const [showingAnswer, setShowingAnswer] = useState(false);
 
   // Keep the latest callbacks without restarting the engine when they change.
-  const callbacks = useRef({ onAnswered, onExit });
-  callbacks.current = { onAnswered, onExit };
+  const callbacks = useRef({ onAnswered, onLoop, onExit });
+  callbacks.current = { onAnswered, onLoop, onExit };
 
   useEffect(() => {
     const engine = new QuizEngine(canvasRef.current!, {
       deck,
+      startIndex,
       effect,
-      onAnswered: (src) => callbacks.current.onAnswered(src),
+      onQuestion: () => setShowingAnswer(false),
+      onAnswered: (src) => {
+        callbacks.current.onAnswered(src);
+        setShowingAnswer(true);
+      },
+      onLoop: () => callbacks.current.onLoop(),
       onFinished: () => callbacks.current.onExit(),
     });
     engineRef.current = engine;
@@ -58,7 +68,7 @@ export function Game({ deck, effect, onAnswered, onExit }: Props) {
       document.removeEventListener("visibilitychange", onVisible);
       wakeLock?.release().catch(() => {});
     };
-  }, [deck, effect]);
+  }, [deck, startIndex, effect]);
 
   const onPointerUp = (e: React.PointerEvent) => {
     const start = pointerStart.current;
@@ -67,7 +77,7 @@ export function Game({ deck, effect, onAnswered, onExit }: Props) {
     if (!start || !engine) return;
     const dx = e.clientX - start.x, dy = e.clientY - start.y;
     if (Math.abs(dx) > SWIPE && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0) engine.next(); else engine.prev();
+      if (dx > 0) engine.prev(); // swipe right: previous. Moving forward is only via the Next button.
     } else if (Math.abs(dy) > SWIPE) {
       if (dy < 0) engine.reveal(); else onExit();
     } else {
@@ -76,12 +86,17 @@ export function Game({ deck, effect, onAnswered, onExit }: Props) {
   };
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="stage"
-      onPointerDown={(e) => { pointerStart.current = { x: e.clientX, y: e.clientY }; }}
-      onPointerUp={onPointerUp}
-      onPointerCancel={() => { pointerStart.current = null; }}
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        className="stage"
+        onPointerDown={(e) => { pointerStart.current = { x: e.clientX, y: e.clientY }; }}
+        onPointerUp={onPointerUp}
+        onPointerCancel={() => { pointerStart.current = null; }}
+      />
+      {showingAnswer && (
+        <button className="next-button" onClick={() => engineRef.current?.next()}>Next →</button>
+      )}
+    </>
   );
 }

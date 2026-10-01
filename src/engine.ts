@@ -23,11 +23,18 @@ const RANDOM_EFFECTS: Effect[] = ["zoom", "pixelate", "zoompixel"];
 type Point = { x: number; y: number };
 
 export interface EngineOptions {
+  /** Every question in the category, in order. Play loops around it. */
   deck: QuizImage[];
+  /** Index in `deck` to start at. */
+  startIndex: number;
   effect: EffectSetting;
+  /** Called when a new question starts loading (the answer is no longer on screen). */
+  onQuestion: () => void;
   /** Called when an image's answer is shown, so it can be marked as used. */
   onAnswered: (src: string) => void;
-  /** Called after the last question, or if nothing could be loaded. */
+  /** Called when play wraps from the last question back to the first. */
+  onLoop: () => void;
+  /** Called if none of the images could be loaded. */
   onFinished: () => void;
 }
 
@@ -111,7 +118,7 @@ export class QuizEngine {
     this.ctx = canvas.getContext("2d")!;
     this.deck = [...opts.deck];
     this.resize();
-    this.show(0);
+    this.show(Math.min(Math.max(0, opts.startIndex), this.deck.length - 1));
     this.raf = requestAnimationFrame(this.loop);
   }
 
@@ -136,9 +143,8 @@ export class QuizEngine {
         this.dirty = true;
         if (this.item) this.opts.onAnswered(this.item.src);
       }
-    } else if (this.phase === "answer") {
-      this.next();
     }
+    // On the answer, taps do nothing: only the Next button moves on.
   }
 
   reveal() {
@@ -146,12 +152,16 @@ export class QuizEngine {
   }
 
   next() {
-    if (this.index + 1 < this.deck.length) this.show(this.index + 1);
-    else this.opts.onFinished(); // out of questions
+    if (this.index + 1 < this.deck.length) {
+      this.show(this.index + 1);
+    } else {
+      this.opts.onLoop(); // past the last question: start the category over
+      this.show(0);
+    }
   }
 
   prev() {
-    this.show(this.index - 1);
+    this.show((this.index - 1 + this.deck.length) % this.deck.length);
   }
 
   // ---- Internals ----------------------------------------------------------
@@ -159,6 +169,7 @@ export class QuizEngine {
     if (index < 0 || index >= this.deck.length) return;
     this.index = index;
     this.phase = "loading";
+    this.opts.onQuestion();
     const item = this.deck[index];
     try {
       const img = await loadImage(item.src);
@@ -175,12 +186,12 @@ export class QuizEngine {
       if (this.destroyed) return;
       console.warn("Failed to load", item.src);
       this.deck.splice(index, 1);
-      if (index < this.deck.length) this.show(index);
+      if (this.deck.length) this.show(index % this.deck.length);
       else this.opts.onFinished();
       return;
     }
     // Preload the next one.
-    const next = this.deck[index + 1];
+    const next = this.deck[(index + 1) % this.deck.length];
     if (next) loadImage(next.src).catch(() => {});
   }
 

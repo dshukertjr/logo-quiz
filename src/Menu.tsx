@@ -22,11 +22,13 @@ interface Props {
   onChange: (settings: Settings) => void;
   total: number;
   left: number;
+  /** 1-based question number Start will begin at. */
+  startNumber: number;
   onStart: () => void;
   onResetUsed: () => void;
 }
 
-export function Menu({ settings, onChange, total, left, onStart, onResetUsed }: Props) {
+export function Menu({ settings, onChange, total, left, startNumber, onStart, onResetUsed }: Props) {
   const categoryLabel = CATEGORIES.find((c) => c.value === settings.category)?.label ?? settings.category;
   const usedCount = total - left;
 
@@ -79,12 +81,15 @@ export function Menu({ settings, onChange, total, left, onStart, onResetUsed }: 
           <div className="progress-bar"><span style={{ width: `${usedPercent}%` }} /></div>
         </div>
 
-        <button className="start" disabled={left === 0} onClick={onStart}>Start</button>
+        <button className="start" disabled={total === 0} onClick={onStart}>
+          {left === 0 ? "Start over from question 1" : startNumber === 1 ? "Start" : `Continue from question ${startNumber}`}
+        </button>
       </div>
 
       <p className="note">
-        Questions play in the order listed in <code>src/images.ts</code>. Once a question's answer is shown,
-        it's skipped next time, so each video gets fresh questions.
+        Questions play in the order listed in <code>src/images.ts</code>. Start picks up at the first question
+        whose answer hasn't been shown yet, so each video gets fresh questions. After the last question it loops
+        back to question 1 and the category starts over.
       </p>
       <button className="link" disabled={usedCount === 0} onClick={resetUsed}>
         Reset used questions in {categoryLabel}
@@ -94,8 +99,8 @@ export function Menu({ settings, onChange, total, left, onStart, onResetUsed }: 
         <h2>Controls</h2>
         <ul>
           <li><b>Tap</b> to go to the next level (4 levels, the last is the plain image)</li>
-          <li><b>Tap on the plain image</b> to show the answer, <b>tap again</b> for the next question</li>
-          <li><b>Swipe left</b> for the next question, <b>swipe right</b> for the previous one</li>
+          <li><b>Tap on the plain image</b> to show the answer, then tap <b>Next →</b> for the next question</li>
+          <li><b>Swipe right</b> for the previous question</li>
           <li><b>Swipe up</b> to reveal instantly, <b>swipe down</b> to come back here</li>
           <li>Keyboard: <kbd>Space</kbd> tap, <kbd>←</kbd> <kbd>→</kbd> previous / next, <kbd>Enter</kbd> reveal, <kbd>Esc</kbd> menu</li>
         </ul>

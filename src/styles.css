@@ -46,6 +46,25 @@ html, body {
   cursor: pointer;
 }
 
+/* Shown on the answer screen; the only way to move on to the next question. */
+.next-button {
+  position: fixed;
+  right: calc(24px + env(safe-area-inset-right));
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  font: inherit;
+  font-size: 22px;
+  font-weight: 500;
+  padding: 16px 32px;
+  color: var(--foreground);
+  background: var(--brand-400);
+  border: 1px solid var(--brand-500);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.next-button:active { background: var(--brand); }
+
 /* ---- Menu ---------------------------------------------------------------- */
 .menu {
   max-width: 520px;
